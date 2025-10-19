@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unizone – Your Smart Study Zone</title>
+  <meta name="description" content="Unizone is a student-friendly hub for courses, question banks, and smart online exams." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --blue:#4EA8DE;          /* Sky Blue */
+      --purple:#9D4EDD;        /* Lavender Purple */
+      --teal:#4CC9F0;          /* Soft Teal */
+      --ink:#2B2D42;           /* Dark Grey */
+      --bg:#FFFFFF;            /* White */
+      --muted:#6b7280;         /* Tailwind slate-500 vibe */
+      --card:#f7f8fb;
+      --ring: rgba(77, 70, 250, .25);
+      --shadow: 0 10px 25px rgba(0,0,0,.07);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f7fbff 0%, #ffffff 100%)}
+    a{color:inherit;text-decoration:none}
+    .container{width:100%;max-width:1180px;margin-inline:auto;padding:0 20px}
+
+    /* Header */
+    header{position:sticky;top:0;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #eef2f7;z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background: radial-gradient(120% 120% at 20% 10%, var(--purple) 0%, #7b2cbf 48%, #5a189a 100%);box-shadow:0 6px 20px rgba(157,78,221,.35)}
+    .brand-name{font-weight:800;letter-spacing:.2px}
+    .brand small{display:block;font-weight:600;font-size:11px;color:var(--muted);margin-top:-2px}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    nav a{padding:10px 12px;border-radius:12px;color:#0f172a;font-weight:600}
+    nav a:hover{background:#eef6ff}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:14px;font-weight:700;transition:.2s ease;border:1px solid transparent}
+    .btn-primary{background:linear-gradient(180deg,var(--blue),#438ec0);color:#fff;box-shadow:0 12px 20px rgba(78,168,222,.35)}
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-ghost{background:#fff;border-color:#e5e7eb}
+    .btn-ghost:hover{background:#f3f4f6}
+
+    /* Mobile nav */
+    .burger{display:none;flex-direction:column;gap:4px}
+    .burger span{width:24px;height:2px;background:#111;border-radius:2px}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden}
+    .hero .inner{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:48px 0}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#EEF2FF;color:#4338CA;font-weight:700;padding:8px 12px;border-radius:999px;font-size:12px;margin-bottom:14px}
+    h1{font-size:clamp(32px,5vw,48px);line-height:1.08;margin:0 0 10px 0}
+    .lead{font-size:clamp(16px,2.6vw,18px);color:#404756;margin:0 0 24px 0}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-card{background:conic-gradient(from 180deg at 50% 50%, #eaf5ff, #f5efff, #eaf5ff);padding:28px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #e8edf8}
+    .illus{aspect-ratio:4/3;border-radius:20px;background:radial-gradient(100% 100% at 0% 0%, #dff3ff 0, #edf2ff 50%, #ffffff 100%);position:relative;border:1px solid #eaf1fc;box-shadow:var(--shadow)}
+    .circle{position:absolute;border-radius:999px;filter:blur(6px);opacity:.7}
+    .c1{width:140px;height:140px;background:var(--purple);top:16%;left:12%}
+    .c2{width:120px;height:120px;background:var(--teal);bottom:12%;right:18%}
+    .c3{width:90px;height:90px;background:var(--blue);bottom:14%;left:30%}
+
+    /* Sections */
+    section{padding:24px 0 8px}
+    .section-title{font-size:26px;margin:0 0 18px 0}
+    .grid{display:grid;gap:16px}
+    .cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:var(--card);border:1px solid #e8edf8;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:8px 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    .icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:#eef6ff;margin-bottom:8px}
+
+    .split{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+    /* Course list */
+    .courses{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .course{background:#fff;border:1px solid #e8edf8;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:#eff6ff;color:#1d4ed8;padding:6px 10px;border-radius:999px;font-weight:600;font-size:12px}
+
+    /* CTA bands */
+    .band{background:linear-gradient(90deg,#eef7ff, #f7efff);border:1px solid #e8edf8;border-radius:18px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+
+    /* Footer */
+    footer{margin-top:36px;padding:28px 0;background:#0f172a;color:#e5e7eb}
+    footer .grid{grid-template-columns:2fr 1fr 1fr}
+    footer a{color:#cbd5e1}
+    footer a:hover{color:#fff}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero .inner{grid-template-columns:1fr}
+      .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .courses{grid-template-columns:repeat(2,minmax(0,1fr))}
+      footer .grid{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 680px){
+      nav ul{display:none}
+      .burger{display:flex}
+      .cards{grid-template-columns:1fr}
+      .courses{grid-template-columns:1fr}
+      footer .grid{grid-template-columns:1fr}
+      .band{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">
+          <!-- Inline SVG: Open book + lightbulb icon -->
+          <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Unizone logo">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#ffffff" stop-opacity=".9"/>
+                <stop offset="1" stop-color="#E0C3FC" stop-opacity=".8"/>
+              </linearGradient>
+            </defs>
+            <!-- Book -->
+            <path d="M5 17c6-3 12-3 19 0v18c-7-3-13-3-19 0V17Z" fill="url(#g1)"/>
+            <path d="M24 17c6-3 12-3 19 0v18c-7-3-13-3-19 0V17Z" fill="#EAF2FF"/>
+            <!-- Bulb -->
+            <circle cx="24" cy="14" r="7" fill="#9D4EDD"/>
+            <rect x="21.2" y="22" width="5.6" height="4.6" rx="1.6" fill="#4EA8DE"/>
+          </svg>
+        </span>
+        <div class="brand-name">Unizone<small>Your Smart Study Zone</small></div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#bank">Question Bank</a></li>
+          <li><a href="#exams">Online Exams</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-ghost" href="#login">Login</a>
+        <a class="btn btn-primary" href="#signup">Sign Up</a>
+        <button class="burger" aria-label="Open menu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="container inner">
+      <div>
+        <span class="badge">🎓 Student First • Free to Start</span>
+        <h1>Unizone<br><span style="background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent">Your Smart Study Zone</span></h1>
+        <p class="lead">Courses, question banks, and smart online exams — all in one clean, fast hub designed for students.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#signup">Get Started</a>
+          <a class="btn btn-ghost" href="#courses">Explore Courses</a>
+        </div>
+        <div class="hero-card" style="margin-top:16px">
+          ✅ Open section for everyone • 🔐 Private section after login • 📱 Fully responsive
+        </div>
+      </div>
+      <div class="illus" aria-hidden="true">
+        <span class="circle c1"></span>
+        <span class="circle c2"></span>
+        <span class="circle c3"></span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Why Unizone -->
+  <section aria-labelledby="why">
+    <div class="container">
+      <h2 id="why" class="section-title">Why Unizone?</h2>
+      <div class="grid cards">
+        <div class="card">
+          <div class="icon">📚</div>
+          <h3>Multiple University Subjects</h3>
+          <p>Organized courses with notes, PDFs, and videos.</p>
+        </div>
+        <div class="card">
+          <div class="icon">❓</div>
+          <h3>Question Bank</h3>
+          <p>Past papers and model answers in one place.</p>
+        </div>
+        <div class="card">
+          <div class="icon">📝</div>
+          <h3>Smart Online Tests</h3>
+          <p>Practice by topic and get instant scores.</p>
+        </div>
+        <div class="card">
+          <div class="icon">💾</div>
+          <h3>Downloadable Resources</h3>
+          <p>PDFs, slides, and summaries ready to use.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Courses -->
+  <section id="courses" aria-labelledby="coursesTitle">
+    <div class="container">
+      <h2 id="coursesTitle" class="section-title">Popular Courses</h2>
+      <div class="grid courses">
+        <div class="course">
+          <span class="chip">Anatomy</span>
+          <h3 style="margin-top:8px">Human Anatomy</h3>
+          <p class="muted">Intro notes, labeled diagrams, quizzes.</p>
+          <div class="cta" style="margin-top:10px"><a class="btn btn-primary" href="#">Start Now</a></div>
+        </div>
+        <div class="course">
+          <span class="chip">Biochemistry</span>
+          <h3 style="margin-top:8px">Biochemistry Essentials</h3>
+          <p class="muted">Metabolism, lab tips, MCQs by topic.</p>
+          <div class="cta" style="margin-top:10px"><a class="btn btn-primary" href="#">Start Now</a></div>
+        </div>
+        <div class="course">
+          <span class="chip">PR & Media</span>
+          <h3 style="margin-top:8px">PR & Media Methods</h3>
+          <p class="muted">Campaign design, research methods, quizzes.</p>
+          <div class="cta" style="margin-top:10px"><a class="btn btn-primary" href="#">Start Now</a></div>
+        </div>
+      </div>
+      <div style="margin-top:14px" class="cta"><a class="btn btn-ghost" href="#">View All Courses</a></div>
+    </div>
+  </section>
+
+  <!-- Question Bank -->
+  <section id="bank" aria-labelledby="bankTitle">
+    <div class="container">
+      <div class="grid split">
+        <div>
+          <h2 id="bankTitle" class="section-title">Question Bank</h2>
+          <p class="lead">Learn from past exams and themed question sets. Filter by subject, year, or topic.</p>
+          <div class="band" style="margin-top:10px">
+            <div>
+              <strong>Try samples without login</strong>
+              <p style="margin:6px 0;color:var(--muted)">Open previews for biochemistry, anatomy, and PR.</p>
+            </div>
+            <a class="btn btn-primary" href="#">View Question Bank</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon">📄</div>
+          <h3>Samples</h3>
+          <ul style="margin:8px 0 0 18px;color:var(--muted)">
+            <li>Biochemistry • Metabolism MCQs (Preview)</li>
+            <li>Anatomy • Bones SAQs (Preview)</li>
+            <li>PR • Research Methods (Preview)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Exams CTA -->
+  <section id="exams" aria-labelledby="examsTitle">
+    <div class="container">
+      <div class="band">
+        <div>
+          <h2 id="examsTitle" style="margin:0 0 6px 0">Online Exams</h2>
+          <p class="lead" style="margin:0">Choose a subject, pick topics, and get instant feedback.</p>
+        </div>
+        <a class="btn btn-primary" href="#">Take a Test Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section id="resources" aria-labelledby="resTitle">
+    <div class="container">
+      <h2 id="resTitle" class="section-title">Resources</h2>
+      <div class="grid cards">
+        <div class="card">
+          <div class="icon">📘</div>
+          <h3>PDF Summaries</h3>
+          <p>Concise notes for last‑minute revision.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🎞️</div>
+          <h3>Video Explainers</h3>
+          <p>Short, focused explainers to boost understanding.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🧪</div>
+          <h3>Lab Tips</h3>
+          <p>Checklists and pitfalls for practical exams.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🗂️</div>
+          <h3>Slides & Templates</h3>
+          <p>Presentation packs for coursework and talks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join / Contact -->
+  <section id="contact" aria-labelledby="joinTitle">
+    <div class="container">
+      <div class="band">
+        <div>
+          <h2 id="joinTitle" style="margin:0 0 6px 0">Join Us</h2>
+          <p style="margin:0;color:var(--muted)">Sign up for access to full banks, tests, and personalized progress.</p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-ghost" href="#login">Login</a>
+          <a class="btn btn-primary" href="#signup">Sign Up Free</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="grid">
+        <div>
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:8px">
+            <span class="logo" aria-hidden="true"></span>
+            <strong>Unizone</strong>
+          </div>
+          <p style="margin:0;color:#cbd5e1">© 2025 Unizone — All Rights Reserved</p>
+        </div>
+        <div>
+          <strong style="display:block;margin-bottom:8px">Quick Links</strong>
+          <a href="#courses">Courses</a><br>
+          <a href="#bank">Question Bank</a><br>
+          <a href="#exams">Online Exams</a>
+        </div>
+        <div>
+          <strong style="display:block;margin-bottom:8px">Follow</strong>
+          <a href="#">Instagram</a><br>
+          <a href="#">Telegram</a><br>
+          <a href="#">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu(){
+      const nav = document.querySelector('nav ul');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      if(nav.style.display==='flex'){nav.style.flexDirection='column';nav.style.gap='10px';nav.style.background='#fff';nav.style.padding='14px';nav.style.border='1px solid #e5e7eb';nav.style.borderRadius='14px';}
+    }
+  </script>
+</body>
+</html>
+
+
+
+<!-- =====================
+     FILE 2: index-ar.html (Arabic RTL Home)
+     Save as: index-ar.html
+====================== -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>يونيزون – منطقتك الذكية للدراسة</title>
+  <meta name="description" content="منصة طلابية للدروس وبنك الأسئلة والاختبارات الذكية." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#4EA8DE;--purple:#9D4EDD;--teal:#4CC9F0;--ink:#1f2937;--bg:#FFFFFF;--muted:#6b7280;--card:#f7f8fb;--shadow:0 10px 25px rgba(0,0,0,.07);--radius:18px}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Cairo,system-ui,Segoe UI,Roboto,Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(180deg,#f7fbff 0%, #ffffff 100%)}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1180px;margin-inline:auto;padding:0 20px}
+    header{position:sticky;top:0;background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid #eef2f7;z-index:50}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background: radial-gradient(120% 120% at 20% 10%, var(--purple) 0%, #7b2cbf 48%, #5a189a 100%);box-shadow:0 6px 20px rgba(157,78,221,.35)}
+    .brand-name{font-weight:800}
+    .brand small{display:block;font-weight:700;font-size:12px;color:var(--muted);margin-top:-2px}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    nav a{padding:10px 12px;border-radius:12px;color:#0f172a;font-weight:700}
+    nav a:hover{background:#eef6ff}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border-radius:14px;font-weight:800;transition:.2s ease;border:1px solid transparent}
+    .btn-primary{background:linear-gradient(180deg,var(--blue),#438ec0);color:#fff;box-shadow:0 12px 20px rgba(78,168,222,.35)}
+    .btn-ghost{background:#fff;border-color:#e5e7eb}
+    .hero{position:relative}
+    .inner{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:48px 0}
+    .badge{display:inline-flex;gap:8px;align-items:center;background:#EEF2FF;color:#4338CA;font-weight:800;padding:8px 12px;border-radius:999px;font-size:12px;margin-bottom:14px}
+    h1{font-size:clamp(32px,5vw,48px);line-height:1.15;margin:0 0 10px 0}
+    .lead{font-size:clamp(16px,2.6vw,18px);color:#404756;margin:0 0 24px 0}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .hero-card{background:conic-gradient(from 180deg at 50% 50%, #eaf5ff, #f5efff, #eaf5ff);padding:28px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #e8edf8}
+    .illus{aspect-ratio:4/3;border-radius:20px;background:radial-gradient(100% 100% at 0% 0%, #dff3ff 0, #edf2ff 50%, #ffffff 100%);border:1px solid #eaf1fc;box-shadow:var(--shadow)}
+    section{padding:24px 0 8px}
+    .section-title{font-size:26px;margin:0 0 18px 0}
+    .grid{display:grid;gap:16px}
+    .cards{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .card{background:var(--card);border:1px solid #e8edf8;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:8px 0 6px;font-size:18px}
+    .card p{margin:0;color:var(--muted);font-size:14px}
+    .split{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .courses{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .course{background:#fff;border:1px solid #e8edf8;border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+    .chip{display:inline-flex;align-items:center;gap:8px;background:#eff6ff;color:#1d4ed8;padding:6px 10px;border-radius:999px;font-weight:800;font-size:12px}
+    .band{background:linear-gradient(90deg,#eef7ff, #f7efff);border:1px solid #e8edf8;border-radius:18px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    footer{margin-top:36px;padding:28px 0;background:#0f172a;color:#e5e7eb}
+    footer .grid{grid-template-columns:2fr 1fr 1fr}
+    @media (max-width: 980px){.inner{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.courses{grid-template-columns:repeat(2,1fr)}footer .grid{grid-template-columns:1fr 1fr}}
+    @media (max-width: 680px){nav ul{display:none}.cards,.courses{grid-template-columns:1fr}footer .grid{grid-template-columns:1fr}.band{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <div class="brand-name">Unizone<small>Your Smart Study Zone</small></div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#home">الرئيسية</a></li>
+          <li><a href="#courses">المواد</a></li>
+          <li><a href="#bank">بنك الأسئلة</a></li>
+          <li><a href="#exams">اختبارات أونلاين</a></li>
+          <li><a href="#resources">ملفات</a></li>
+          <li><a href="#contact">تواصل</a></li>
+        </ul>
+      </nav>
+      <div class="actions">
+        <a class="btn btn-ghost" href="#login">دخول</a>
+        <a class="btn btn-primary" href="#signup">تسجيل</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="container inner">
+      <div>
+        <span class="badge">🎓 أبدأ مجاناً – للطلاب أولاً</span>
+        <h1>يونيزون<br><span style="background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent">منطقتك الذكية للدراسة</span></h1>
+        <p class="lead">مواد دراسية، بنك أسئلة، واختبارات ذكية – في مكان واحد سريع وبسيط.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="#signup">ابدأ الآن</a>
+          <a class="btn btn-ghost" href="#courses">تصفح المواد</a>
+        </div>
+        <div class="hero-card" style="margin-top:16px">✅ قسم مفتوح للجميع • 🔐 قسم خاص بعد تسجيل الدخول • 📱 متجاوب بالكامل</div>
+      </div>
+      <div class="illus" aria-hidden="true"></div>
+    </div>
+  </main>
+
+  <section aria-labelledby="why-ar">
+    <div class="container">
+      <h2 id="why-ar" class="section-title">ليش Unizone؟</h2>
+      <div class="grid cards">
+        <div class="card"><h3>مواد جامعية متعددة</h3><p>ترتيب واضح للدروس وملفات PDF وفيديوهات.</p></div>
+        <div class="card"><h3>بنك أسئلة</h3><p>أسئلة سنوات سابقة مع نماذج حلول.</p></div>
+        <div class="card"><h3>اختبارات ذكية</h3><p>اختبر حسب الموضوع واحصل على نتيجتك فوراً.</p></div>
+        <div class="card"><h3>ملفات قابلة للتحميل</h3><p>ملخصات، عروض، ونماذج جاهزة.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="courses" aria-labelledby="courses-ar">
+    <div class="container">
+      <h2 id="courses-ar" class="section-title">مواد شائعة</h2>
+      <div class="grid courses">
+        <div class="course"><span class="chip">Anatomy</span><h3 style="margin-top:8px">التشريح البشري</h3><p class="muted">ملاحظات تمهيدية ورسومات وأسئلة.</p><div class="cta" style="margin-top:10px"><a class="btn btn-primary" href="#">ابدأ</a></div></div>
+        <div class="course"><span class="chip">Biochemistry</span><h3 style="margin-top:8px">الكيمياء الحياتية</h3><p class="muted">الأيض، نصائح المختبر، MCQs.</p><div class="cta" style="margin-top:10px"><a class="btn btn-primary" href="#">ابدأ</a></div></div>
+        <div class="course"><span class="chip">PR & Media</span><h3 style="margin-top:8px">الإعلام والعلاقات العامة</h3><p class="muted">تصميم الحملات وأساليب البحث.</p><div class="cta" style="margin-top:10px"><a class="btn btn-primary" href="#">ابدأ</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bank" aria-labelledby="bank-ar">
+    <div class="container">
+      <div class="grid split">
+        <div>
+          <h2 id="bank-ar" class="section-title">بنك الأسئلة</h2>
+          <p class="lead">تعلّم من الامتحانات السابقة ومجموعات الأسئلة حسب الموضوع أو السنة.</p>
+          <div class="band" style="margin-top:10px"><div><strong>جرّب عينات بدون تسجيل</strong><p style="margin:6px 0;color:var(--muted)">معاينات للكيمياء الحياتية والتشريح والإعلام.</p></div><a class="btn btn-primary" href="#">عرض البنك</a></div>
+        </div>
+        <div class="card"><h3>عينات</h3><ul style="margin:8px 0 0 18px;color:var(--muted)"><li>الكيمياء الحياتية • أيض (معاينة)</li><li>التشريح • العظام (معاينة)</li><li>الإعلام • مناهج البحث (معاينة)</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="exams" aria-labelledby="exams-ar">
+    <div class="container"><div class="band"><div><h2 id="exams-ar" style="margin:0 0 6px 0">اختبارات أونلاين</h2><p class="lead" style="margin:0">اختر المادة، حدّد الموضوع، واحصل على تغذية راجعة فورية.</p></div><a class="btn btn-primary" href="#">ابدأ اختبار</a></div></div>
+  </section>
+
+  <section id="resources" aria-labelledby="res-ar">
+    <div class="container">
+      <h2 id="res-ar" class="section-title">ملفات</h2>
+      <div class="grid cards">
+        <div class="card"><h3>ملخصات PDF</h3><p>مراجعة سريعة قبل الامتحان.</p></div>
+        <div class="card"><h3>فيديوهات قصيرة</h3><p>شروحات مركزة وسهلة.</p></div>
+        <div class="card"><h3>نصائح المختبر</h3><p>قوائم فحص وأخطاء شائعة.</p></div>
+        <div class="card"><h3>قوالب وعروض</h3><p>شرائح جاهزة للواجبات.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="grid" style="grid-template-columns:2fr 1fr 1fr">
+        <div><strong>Unizone</strong><p style="margin:6px 0;color:#cbd5e1">© 2025 جميع الحقوق محفوظة</p></div>
+        <div><strong style="display:block;margin-bottom:8px">روابط سريعة</strong><a href="#courses">المواد</a><br><a href="#bank">بنك الأسئلة</a><br><a href="#exams">اختبارات</a></div>
+        <div><strong style="display:block;margin-bottom:8px">تواصل</strong><a href="#">إنستغرام</a><br><a href="#">تلغرام</a><br><a href="#">إيميل</a></div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+
+<!-- =====================
+     FILE 3: login.html (Login / Sign Up)
+     Save as: login.html
+====================== -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unizone – Login / Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--blue:#4EA8DE;--purple:#9D4EDD;--ink:#1f2937;--muted:#6b7280;--bg:#f7fbff}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#f7fbff,#ffffff)}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:100%;max-width:780px;background:#fff;border:1px solid #e8edf8;border-radius:18px;box-shadow:0 10px 25px rgba(0,0,0,.07);overflow:hidden}
+    .top{padding:22px 22px 0;display:flex;justify-content:space-between;align-items:center}
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{width:36px;height:36px;border-radius:10px;background: radial-gradient(120% 120% at 20% 10%, var(--purple) 0%, #7b2cbf 48%, #5a189a 100%)}
+    .tabs{display:flex;margin:12px}
+    .tab{flex:1;text-align:center;padding:12px;border-bottom:3px solid transparent;font-weight:800;cursor:pointer}
+    .tab.active{border-color:var(--blue);color:#0f172a}
+    .grid{display:grid;grid-template-columns:1fr 1fr}
+    form{padding:22px}
+    label{display:block;font-weight:700;margin:12px 0 6px}
+    input{width:100%;padding:12px 14px;border:1px solid #e5e7eb;border-radius:12px;font-size:15px}
+    .row{display:flex;gap:10px}
+    .btn{margin-top:14px;display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:14px;font-weight:800;color:#fff;background:linear-gradient(180deg,var(--blue),#438ec0);border:0;width:100%}
+    .muted{color:var(--muted);font-size:13px}
+    .side{background:linear-gradient(180deg,#eef7ff,#f5efff);padding:22px}
+    .side h3{margin-top:0}
+    @media (max-width:820px){.grid{grid-template-columns:1fr}.side{order:-1;border-bottom:1px solid #e8edf8}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="top">
+        <div class="brand"><div class="logo"></div><strong>Unizone</strong></div>
+        <a href="index.html" style="text-decoration:none;color:#2563eb;font-weight:800">← Back to Home</a>
+      </div>
+      <div class="tabs">
+        <div class="tab active" onclick="showTab('login')">Login</div>
+        <div class="tab" onclick="showTab('signup')">Sign Up</div>
+      </div>
+      <div class="grid">
+        <form id="login" onsubmit="return handleLogin(event)">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required placeholder="you@example.com" />
+          <label>Password</label>
+          <input type="password" id="loginPass" minlength="6" required placeholder="••••••" />
+          <button class="btn" type="submit">Login</button>
+          <p class="muted">By logging in you accept our terms.</p>
+        </form>
+        <form id="signup" style="display:none" onsubmit="return handleSignup(event)">
+          <div class="row">
+            <div style="flex:1">
+              <label>First name</label>
+              <input type="text" id="fn" required />
+            </div>
+            <div style="flex:1">
+              <label>Last name</label>
+              <input type="text" id="ln" required />
+            </div>
+          </div>
+          <label>Email</label>
+          <input type="email" id="em" required placeholder="you@example.com" />
+          <label>Password</label>
+          <input type="password" id="pw" minlength="6" required placeholder="At least 6 characters" />
+          <button class="btn" type="submit">Create free account</button>
+          <p class="muted">No payment needed. You can add it later.</p>
+        </form>
+        <div class="side">
+          <h3>Why join Unizone?</h3>
+          <ul>
+            <li>Access full question banks</li>
+            <li>Take smart exams with instant scores</li>
+            <li>Track your progress by subject</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function showTab(id){
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('form').forEach(f=>f.style.display='none');
+      document.querySelector(`[onclick="showTab('${id}')"]`).classList.add('active');
+      document.getElementById(id).style.display='block';
+    }
+    function handleLogin(e){e.preventDefault();alert('Demo login: this is a static site. Hook to Firebase/Backend later.');return false}
+    function handleSignup(e){e.preventDefault();alert('Demo signup: save to backend later (e.g., Firebase Auth).');return false}
+  </script>
+</body>
+</html>
